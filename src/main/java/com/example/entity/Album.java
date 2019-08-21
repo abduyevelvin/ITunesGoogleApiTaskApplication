@@ -2,6 +2,14 @@ package com.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Java class convertible for ITunes alum API JSON
+ * The class contains fields which is appropriate to JSON tags
+ * Generated setter and getter methods of class fields
+ * 
+ * @author Abduyev Elvin
+ * 
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Album {
 

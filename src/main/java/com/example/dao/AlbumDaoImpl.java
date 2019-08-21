@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
 public class AlbumDaoImpl implements AlbumDao {
+
+	private final Logger logger = LoggerFactory.getLogger(AlbumDaoImpl.class);
 	
 	@Autowired
 	private ObjectMapper mapper;
@@ -47,7 +51,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			albResp.add(resp);
 		}
 		
-		System.out.println(albResp.toString());
+		logger.info(albResp.toString());
 		
 		return albResp;
 	}

@@ -2,6 +2,17 @@ package com.example.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+/**
+ * Java class contains fields which is appropriate to JSON tag
+ * Generated setter and getter methods of class fields
+ * The class is the one field of Book class
+ * 
+ * @author Abduyev Elvin
+ * 
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class VolumeInfo {
 
 	private String title;
