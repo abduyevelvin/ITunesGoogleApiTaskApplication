@@ -16,6 +16,12 @@ import com.example.entity.ITunesAlbums;
 import com.example.response.AlbumResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Java class implements AlbumDao interface
+ * 
+ * @author Abduyev Elvin
+ * 
+ */
 @Repository
 public class AlbumDaoImpl implements AlbumDao {
 
@@ -24,6 +30,14 @@ public class AlbumDaoImpl implements AlbumDao {
 	@Autowired
 	private ObjectMapper mapper;
 	
+	/** The method getting albums.
+	 * Connecting to the API and getting albums under searching conditions
+	 * For logging used Logger
+	 * ObjectMapper injected and used for converting JSON format to Java class
+	 * 
+	 * @param term A string containing the search conditions.
+	 * @param limit An Integer containing the limit of getting albums can be null.
+	*/
 	@Override
 	public List<AlbumResponse> getAlbums(String term, Integer limit) throws ClientProtocolException, IOException {
 		
@@ -51,7 +65,12 @@ public class AlbumDaoImpl implements AlbumDao {
 			albResp.add(resp);
 		}
 		
-		logger.info(albResp.toString());
+		if(response == null) {
+			logger.error("There is no album within entered searching conditions!");
+		}
+		else {
+			logger.info(albResp.toString());
+		}
 		
 		return albResp;
 	}

@@ -1,9 +1,22 @@
 package com.example.response;
 
+/**
+ * Java class for giving response to the end user.
+ * Generated setter and getter methods of class fields
+ * 
+ * @author Abduyev Elvin
+ * 
+ */
 public class AlbumResponse {
 	
+	/** Represents the title of albums.
+	*/
 	private String title;
+	/** Represents the artist of albums.
+	*/
 	private String artist;
+	/** Represents the kind of data.
+	*/
 	private String kind;
 	
 	public String getTitle() {

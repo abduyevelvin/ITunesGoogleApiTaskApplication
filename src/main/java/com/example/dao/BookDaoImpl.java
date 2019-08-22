@@ -16,6 +16,12 @@ import com.example.entity.GoogleBooks;
 import com.example.response.BookResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Java class implements BookDao interface
+ * 
+ * @author Abduyev Elvin
+ * 
+ */
 @Repository
 public class BookDaoImpl implements BookDao {
 
@@ -24,6 +30,13 @@ public class BookDaoImpl implements BookDao {
 	@Autowired
 	private ObjectMapper mapper;
 
+	/** The method getting books.
+	 * Connecting to the API and getting books under searching conditions
+	 * For logging used Logger
+	 * ObjectMapper injected and used for converting JSON format to Java class
+	 * 
+	 * @param text A string containing the search conditions.
+	*/
 	@Override
 	public List<BookResponse> getBooks(String text) throws ClientProtocolException, IOException {
 
@@ -47,7 +60,12 @@ public class BookDaoImpl implements BookDao {
 			bookResp.add(resp);
 		}
 
-		logger.info(bookResp.toString());
+		if(response == null) {
+			logger.error("There is no album within entered searching conditions!");
+		}
+		else {
+			logger.info(bookResp.toString());
+		}
 
 		return bookResp;
 	}
