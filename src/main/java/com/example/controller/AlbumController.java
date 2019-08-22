@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.exception.AlbumNotFoundException;
 import com.example.response.AlbumResponse;
 import com.example.service.AlbumService;
 
@@ -28,6 +29,10 @@ public class AlbumController {
 		term = term.replaceAll(" ", "+");
 		
 		List<AlbumResponse> albResp = albumService.getAlbums(term, limit);
+		
+		if(albResp.isEmpty() || albResp == null) {
+			throw new AlbumNotFoundException("There is no album in given search conditions: " + term);
+		}
 		
 		return ResponseEntity.ok().body(albResp);
 	}

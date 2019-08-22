@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.exception.BookNotFoundException;
 import com.example.response.BookResponse;
 import com.example.service.BookService;
 
@@ -28,6 +29,10 @@ public class BookController {
 		text = text.replaceAll(" ", "+");
 		
 		List<BookResponse> bookResp = bookService.getBooks(text);
+		
+		if(bookResp.isEmpty() || bookResp == null) {
+			throw new BookNotFoundException("There is no book in given search conditions: " + text);
+		}
 		
 		return ResponseEntity.ok().body(bookResp);
 	}
