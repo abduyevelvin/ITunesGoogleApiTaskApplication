@@ -1,8 +1,14 @@
 package com.example.dao;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
@@ -26,17 +32,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class BookDaoImpl implements BookDao {
 
 	private final Logger logger = LoggerFactory.getLogger(AlbumDaoImpl.class);
-	
+
 	@Autowired
 	private ObjectMapper mapper;
 
-	/** The method getting books.
-	 * Connecting to the API and getting books under searching conditions
-	 * For logging used Logger
-	 * ObjectMapper injected and used for converting JSON format to Java class
+	/**
+	 * The method getting books. Connecting to the API and getting books under
+	 * searching conditions For logging used Logger ObjectMapper injected and used
+	 * for converting JSON format to Java class
 	 * 
 	 * @param text A string containing the search conditions.
-	*/
+	 */
 	@Override
 	public List<BookResponse> getBooks(String text) throws ClientProtocolException, IOException {
 
@@ -44,9 +50,26 @@ public class BookDaoImpl implements BookDao {
 		List<Book> books = new ArrayList<Book>();
 		List<BookResponse> bookResp = new ArrayList<BookResponse>();
 		BookResponse resp = new BookResponse();
+		StringBuilder sb = new StringBuilder();
+		String output;
 
-		Request request = Request.Get("https://www.googleapis.com/books/v1/volumes?q=" + text);
-		String response = request.execute().returnContent().asString();
+		URL url = new URL("https://www.googleapis.com/books/v1/volumes?q=" + text);
+		HttpURLConnection req = (HttpURLConnection) url.openConnection();
+		req.connect();
+
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader((req.getInputStream())));
+			while ((output = br.readLine()) != null) {
+				sb.append(output);
+			}
+
+			req.setConnectTimeout((int) TimeUnit.SECONDS.toMinutes(60L));
+			req.setReadTimeout((int) TimeUnit.SECONDS.toMinutes(60L));
+		} catch (SocketTimeoutException e) {
+			logger.error("Response time is longer");
+		}
+
+		String response = sb.toString();
 
 		googleBooks = mapper.readValue(response, GoogleBooks.class);
 
@@ -60,10 +83,9 @@ public class BookDaoImpl implements BookDao {
 			bookResp.add(resp);
 		}
 
-		if(response == null) {
+		if (response == null) {
 			logger.error("There is no album within entered searching conditions!");
-		}
-		else {
+		} else {
 			logger.info(bookResp.toString());
 		}
 

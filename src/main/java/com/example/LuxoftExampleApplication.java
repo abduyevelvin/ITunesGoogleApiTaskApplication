@@ -2,22 +2,35 @@ package com.example;
 
 import java.io.IOException;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.http.client.ClientProtocolException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 //import org.springframework.context.ApplicationContext;
+import com.example.config.TaskProperties;
 
 //import com.example.service.AlbumService;
 //import com.example.service.BookService;
 
 /**
  * Java class including main method for starting boot application
+ * Injecting properties for checking which profile is activated in application.properties file
  * 
  * @author Abduyev Elvin
  * 
  */
 @SpringBootApplication
 public class LuxoftExampleApplication {
+	
+	private static Logger logger = LoggerFactory.getLogger(LuxoftExampleApplication.class);
+	
+	@Autowired
+    private TaskProperties taskProperties;
 	
 	public static void main(String[] args) throws ClientProtocolException, IOException {
 		SpringApplication.run(LuxoftExampleApplication.class, args);
@@ -34,4 +47,10 @@ public class LuxoftExampleApplication {
 		
 		//bookService.getBooks("java");
 	}
+	
+	@PostConstruct
+    public void init() {
+ 
+        logger.info(taskProperties.toString());
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
@@ -28,7 +29,13 @@ public class BookController {
 		
 		text = text.replaceAll(" ", "+");
 		
-		List<BookResponse> bookResp = bookService.getBooks(text);
+		List<BookResponse> bookResp = new ArrayList<BookResponse>();
+		
+		try {
+			bookResp = bookService.getBooks(text);
+		} catch (Exception e) {
+			
+		}
 		
 		if(bookResp.isEmpty() || bookResp == null) {
 			throw new BookNotFoundException("There is no book in given search conditions: " + text);
