@@ -25,16 +25,16 @@ import com.example.config.TaskProperties;
  * 
  */
 @SpringBootApplication
-public class LuxoftExampleApplication {
+public class ITunesGoogleApiTaskApplication {
 	
-	private static Logger logger = LoggerFactory.getLogger(LuxoftExampleApplication.class);
+	private static Logger logger = LoggerFactory.getLogger(ITunesGoogleApiTaskApplication.class);
 	
 	@Autowired
     private TaskProperties taskProperties;
 	
 	public static void main(String[] args) throws ClientProtocolException, IOException {
-		SpringApplication.run(LuxoftExampleApplication.class, args);
-		//ApplicationContext context = SpringApplication.run(LuxoftExampleApplication.class, args);
+		SpringApplication.run(ITunesGoogleApiTaskApplication.class, args);
+		//ApplicationContext context = SpringApplication.run(ITunesGoogleApiTaskApplication.class, args);
 		
 		//AlbumService albumService = context.getBean(AlbumService.class);
 		//BookService bookService = context.getBean(BookService.class);

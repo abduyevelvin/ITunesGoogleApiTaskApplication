@@ -41,7 +41,7 @@ public class GoogleBooks {
 		return totalItems;
 	}
 	/** Sets the item's total amount.
-	 * @param kind An int containing the total amount of items.
+	 * @param totalItems An int containing the total amount of items.
 	*/
 	public void setTotalItems(int totalItems) {
 		this.totalItems = totalItems;

@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Java class implements AlbumDao interface
+ * Injected ObjectMapper for mapping json to the java object
  * 
  * @author Abduyev Elvin
  * 
@@ -47,10 +49,9 @@ public class AlbumDaoImpl implements AlbumDao {
 	@Override
 	public List<AlbumResponse> getAlbums(String term, Integer limit) throws ClientProtocolException, IOException {
 
-		ITunesAlbums albums = null;
-		List<Album> alb = new ArrayList<Album>();
-		List<AlbumResponse> albResp = new ArrayList<AlbumResponse>();
-		AlbumResponse resp = new AlbumResponse();
+		ITunesAlbums album = null;
+		List<Album> albums = new ArrayList<Album>();
+		List<AlbumResponse> albumsResponse = new ArrayList<AlbumResponse>();
 		StringBuilder sb = new StringBuilder();
 		String output;
 
@@ -63,42 +64,45 @@ public class AlbumDaoImpl implements AlbumDao {
 		// String response = request.execute().returnContent().asString();
 
 		URL url = new URL("https://itunes.apple.com/search?term=" + term + "&limit=" + limit);
-		HttpURLConnection req = (HttpURLConnection) url.openConnection();
-		req.connect();
+		HttpURLConnection request = (HttpURLConnection) url.openConnection();
+		request.connect();
 
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader((req.getInputStream())));
+			BufferedReader br = new BufferedReader(new InputStreamReader((request.getInputStream())));
 			while ((output = br.readLine()) != null) {
 				sb.append(output);
 			}
 
-			req.setConnectTimeout((int) TimeUnit.SECONDS.toMinutes(60L));
-			req.setReadTimeout((int) TimeUnit.SECONDS.toMinutes(60L));
+			request.setConnectTimeout((int) TimeUnit.SECONDS.toMinutes(60L));
+			request.setReadTimeout((int) TimeUnit.SECONDS.toMinutes(60L));
 		} catch (SocketTimeoutException e) {
 			logger.error("Response time is longer");
 		}
 
 		String response = sb.toString();
 
-		albums = mapper.readValue(response, ITunesAlbums.class);
+		album = mapper.readValue(response, ITunesAlbums.class);
 
-		alb = albums.getResults();
+		albums = album.getResults();
+		
+		for (Album a : albums) {
+			AlbumResponse albumResponse = new AlbumResponse();
+			albumResponse.setTitle(a.getTrackName());
+			albumResponse.setArtist(a.getArtistName());
+			albumResponse.setKind(a.getKind());
 
-		for (Album al : alb) {
-			resp.setTitle(al.getTrackName());
-			resp.setArtist(al.getArtistName());
-			resp.setKind(al.getKind());
-
-			albResp.add(resp);
+			albumsResponse.add(albumResponse);
 		}
 
 		if (response == null) {
 			logger.error("There is no album within entered searching conditions!");
 		} else {
-			logger.info(albResp.toString());
+			logger.info(albumsResponse.toString());
 		}
 
-		return albResp;
+		Collections.sort(albumsResponse);
+		
+		return albumsResponse;
 	}
 
 }

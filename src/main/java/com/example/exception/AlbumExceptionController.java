@@ -5,10 +5,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+/**
+ * Java class handling exceptions during API calls using ControllerAdvice
+ * 
+ * @author Abduyev Elvin
+ * 
+ */
 @ControllerAdvice
 public class AlbumExceptionController {
 
-	// Add an exception handler
+	/**
+	 * The method for handling exceptions when no albums found under given conditions 
+	 * 
+	 * @param ex An AlbumNotFoundException containing which kind of exception thrown
+	 * @return response of error and http status regarding of exception
+	 */
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleExcpetion(AlbumNotFoundException ex) {
 		ErrorResponse error = new ErrorResponse();
@@ -19,6 +30,12 @@ public class AlbumExceptionController {
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 	}
 	
+	/**
+	 * The method for handling exceptions for any bad requests 
+	 * 
+	 * @param ex An Exception containing which kind of exception thrown
+	 * @return response of error and http status regarding of exception
+	 */
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleExcpetion(Exception ex) {
 		ErrorResponse error = new ErrorResponse();

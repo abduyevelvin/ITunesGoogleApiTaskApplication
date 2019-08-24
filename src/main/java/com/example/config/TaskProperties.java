@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
- 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("task")
 public class TaskProperties {
 
-	@NotEmpty
 	private String resourceUrl;
 
 	private List<Integer> resourcePort;
@@ -33,7 +30,7 @@ public class TaskProperties {
 	@Override
 	public String toString() {
 
-		return "resourceUrl: " + this.resourceUrl + "\n" + "resourcePort: " + this.resourcePort + "\n"
+		return "\nresourceUrl: " + this.resourceUrl + "\n" + "resourcePort: " + this.resourcePort + "\n"
 				+ "resourceCount: " + this.resourceCount + "\n";
 	}
 

@@ -15,6 +15,13 @@ import com.example.exception.AlbumNotFoundException;
 import com.example.response.AlbumResponse;
 import com.example.service.AlbumService;
 
+/**
+ * Java class for creating RESTful web services
+ * Injecting AlbumService for using required methods for getting result
+ * 
+ * @author Abduyev Elvin
+ * 
+ */
 @RestController
 @RequestMapping("/api")
 public class AlbumController {
@@ -22,6 +29,17 @@ public class AlbumController {
 	@Autowired
 	private AlbumService albumService;
 	
+	/**
+	 * The method for getting albums from ITunes
+	 * 
+	 * @param term mandatory search condition
+	 * @param limit not required search condition and default is 5
+	 * @return list of albums or throws exceptions
+	 * 
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * @throws AlbumNotFoundException
+	 */
 	@GetMapping("/albums")
 	public ResponseEntity<List<AlbumResponse>> getAlbums(@RequestParam String term, @RequestParam(required = false) Integer limit) 
 			throws ClientProtocolException, IOException {

@@ -9,7 +9,7 @@ import java.util.List;
  * @author Abduyev Elvin
  * 
  */
-public class BookResponse {
+public class BookResponse implements Comparable<BookResponse> {
 
 	/** Represents the title of books.
 	*/
@@ -38,6 +38,18 @@ public class BookResponse {
 	}
 	public void setKind(String kind) {
 		this.kind = kind;
+	}
+	
+	/** 
+	 * The method for ordering result regarding book title
+	 * 
+	 * @param BookResponse accepting books
+	 * @return ordered books by title
+	 */
+	@Override
+	public int compareTo(BookResponse response) {
+		int order = this.title.compareTo(response.title);
+		return order;
 	}
 	
 	@Override

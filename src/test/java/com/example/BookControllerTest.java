@@ -59,7 +59,7 @@ public class BookControllerTest {
 		when().
 		  get("volumes").
 		then().
-		  body("items.volumeInfo.title[1]", equalTo("Turing Machines with Sublogarithmic Space") ).
+		  body("items.volumeInfo.title[1]", equalTo("The Turing Test") ).
 		  and().time(lessThan(60000L));
 				
 	}

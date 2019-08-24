@@ -1,6 +1,8 @@
 com.example
+com.example.config
 com.example.controller
 com.example.dao
 com.example.entity
+com.example.exception
 com.example.response
 com.example.service

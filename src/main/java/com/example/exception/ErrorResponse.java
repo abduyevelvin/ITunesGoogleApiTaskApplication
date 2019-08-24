@@ -1,5 +1,13 @@
 package com.example.exception;
 
+/**
+ * Java class handling error response during exceptions
+ * Showing error messages, status and time to the end user
+ * Generated setter and getter methods of class fields
+ * 
+ * @author Abduyev Elvin
+ * 
+ */
 public class ErrorResponse {
 
 	private int status;

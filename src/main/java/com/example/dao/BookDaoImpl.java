@@ -7,11 +7,11 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +46,12 @@ public class BookDaoImpl implements BookDao {
 	@Override
 	public List<BookResponse> getBooks(String text) throws ClientProtocolException, IOException {
 
-		GoogleBooks googleBooks = null;
+		GoogleBooks googleBook = null;
 		List<Book> books = new ArrayList<Book>();
-		List<BookResponse> bookResp = new ArrayList<BookResponse>();
-		BookResponse resp = new BookResponse();
+		List<BookResponse> booksResponse = new ArrayList<BookResponse>();
 		StringBuilder sb = new StringBuilder();
 		String output;
+		int counter = 0;
 
 		URL url = new URL("https://www.googleapis.com/books/v1/volumes?q=" + text);
 		HttpURLConnection req = (HttpURLConnection) url.openConnection();
@@ -71,25 +71,33 @@ public class BookDaoImpl implements BookDao {
 
 		String response = sb.toString();
 
-		googleBooks = mapper.readValue(response, GoogleBooks.class);
+		googleBook = mapper.readValue(response, GoogleBooks.class);
 
-		books = googleBooks.getItems();
+		books = googleBook.getItems();
 
-		for (Book book : books) {
-			resp.setTitle(book.getVolumeInfo().getTitle());
-			resp.setKind(book.getKind());
-			resp.setAuthors(book.getVolumeInfo().getAuthors());
+		for (Book b : books) {
+			BookResponse bookResponse = new BookResponse();
+			bookResponse.setTitle(b.getVolumeInfo().getTitle());
+			bookResponse.setKind(b.getKind());
+			bookResponse.setAuthors(b.getVolumeInfo().getAuthors());
 
-			bookResp.add(resp);
+			booksResponse.add(bookResponse);
+			counter++;
+			
+			if(counter == 5) {
+				break;
+			}
 		}
 
 		if (response == null) {
 			logger.error("There is no album within entered searching conditions!");
 		} else {
-			logger.info(bookResp.toString());
+			logger.info(booksResponse.toString());
 		}
+		
+		Collections.sort(booksResponse);
 
-		return bookResp;
+		return booksResponse;
 	}
 
 }

@@ -7,7 +7,7 @@ package com.example.response;
  * @author Abduyev Elvin
  * 
  */
-public class AlbumResponse {
+public class AlbumResponse implements Comparable<AlbumResponse> {
 	
 	/** Represents the title of albums.
 	*/
@@ -37,11 +37,22 @@ public class AlbumResponse {
 	public void setKind(String kind) {
 		this.kind = kind;
 	}
+
+	/**
+	 * The method for ordering result regarding song title
+	 * 
+	 * @param AlbumResponse accepting albums
+	 * @return ordered albums by title
+	 */
+	@Override
+	public int compareTo(AlbumResponse response) {
+		int order = this.title.compareTo(response.title);
+		return order;
+	}
 	
 	@Override
 	public String toString() {
 		return "AlbumResponse [title=" + title + ", artist=" + artist + ", kind=" + kind + "]";
 	}
-	
 	
 }
